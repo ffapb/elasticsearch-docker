@@ -39,6 +39,7 @@ COPY bin/es-docker bin/es-docker
 # Set to yellow for the case of running 1 node, like note in 
 # tests/test_basic_index_crud.py # test_cluster_health_after_crud
 # TODO How to detect that 2 nodes are running and wait for "green"?
+# Reference: https://docs.docker.com/engine/reference/builder/#/healthcheck
 COPY docker-healthcheck /usr/local/bin/
 HEALTHCHECK CMD ["docker-healthcheck","yellow"]
 
