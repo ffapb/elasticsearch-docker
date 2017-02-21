@@ -41,6 +41,7 @@ COPY bin/es-docker bin/es-docker
 # TODO How to detect that 2 nodes are running and wait for "green"?
 # Reference: https://docs.docker.com/engine/reference/builder/#/healthcheck
 COPY docker-healthcheck /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-healthcheck
 HEALTHCHECK CMD ["docker-healthcheck","yellow"]
 
 USER root

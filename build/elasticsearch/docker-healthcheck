@@ -10,7 +10,14 @@ fi
 
 set -eo pipefail
 
-host="$(hostname --ip-address || echo '127.0.0.1')"
+# Use -i instead of --ip-address in case hostname was just a symlink to busybox
+# The busybox version of hostname supports -i and not --ip-address
+# Both busybox/hostname and the GNU hostname support -i
+# References:
+# https://busybox.net/downloads/BusyBox.html#hostname
+# https://linux.die.net/man/1/hostname
+# http://manpages.ubuntu.com/manpages/precise/man1/hostname.1.html
+host="$(hostname -i || echo '127.0.0.1')"
 
 if health="$(curl -fsSL "http://$host:9200/_cat/health?h=status")"; then
   health="$(echo "$health" | sed -r 's/^[[:space:]]+|[[:space:]]+$//g')" # trim whitespace (otherwise we'll have "green ")
