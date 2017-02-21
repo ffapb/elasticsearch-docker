@@ -38,11 +38,11 @@ COPY bin/es-docker bin/es-docker
 # https://github.com/docker-library/healthcheck/blob/master/elasticsearch/Dockerfile
 # Set to yellow for the case of running 1 node, like note in 
 # tests/test_basic_index_crud.py # test_cluster_health_after_crud
-# TODO How to detect that 2 nodes are running and wait for "green"?
 # Reference: https://docs.docker.com/engine/reference/builder/#/healthcheck
+#
+# TODO How to detect that 2 nodes are running and wait for "green"?
 COPY docker-healthcheck /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-healthcheck
-HEALTHCHECK CMD ["docker-healthcheck","yellow"]
+HEALTHCHECK CMD ["/bin/bash","docker-healthcheck","yellow"]
 
 USER root
 RUN chown elasticsearch:elasticsearch config/elasticsearch.yml config/log4j2.properties bin/es-docker && \
