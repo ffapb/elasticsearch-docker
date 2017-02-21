@@ -1,5 +1,5 @@
 ---
-version: '2'
+version: '2.1'
 services:
   # Can't use service elasticsearch=<num> for now due to named volumes
   elasticsearch1:
@@ -66,6 +66,13 @@ services:
       - elasticsearch1:elasticsearch
     volumes:
       - $PWD/tests:/home/testuser/tests:ro
+    # Despite the python tester having a built-in healthcheck at tests/es_acceptance.py#wait_for_cluster_health
+    # Using the dockerfile healthcheck extends this to other services without having to re-code a wait for health status in each
+    # Note that this requires docker-compose.yml version 2.1, docker-compose>=1.11, docker>=1.13
+    depends_on:
+      elasticsearch1:
+        condition: service_healthy
+
 volumes:
   esdata1:
     driver: local
